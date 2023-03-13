@@ -15,6 +15,9 @@ class SampleView(ViewSet):
         Returns:
             Response -- JSON serialized sample
         """
+        sample = Sample.objects.get(pk=pk)
+        serializer = SampleSerializer(sample)
+        return Response(serializer.data)
 
     def list(self, request):
         """Handle GET requests to get all samples
