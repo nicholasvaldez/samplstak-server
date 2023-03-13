@@ -18,3 +18,11 @@ class GenreView(ViewSet):
         genres = Genre.objects.all()
         serializer = GenreSerializer(genres, many=True)
         return Response(serializer.data)
+
+
+class GenreSerializer(serializers.ModelSerializer):
+    """JSON serializer for genres
+    """
+    class Meta:
+        model = Genre
+        fields = ('id', 'label')
