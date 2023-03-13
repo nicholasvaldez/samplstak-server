@@ -1,0 +1,37 @@
+[
+  {
+    "model": "samplstakapi.genre",
+    "pk": 1,
+    "fields": {
+      "label": "Pop"
+    }
+  },
+  {
+    "model": "samplstakapi.genre",
+    "pk": 2,
+    "fields": {
+      "label": "Hip-Hop"
+    }
+  },
+  {
+    "model": "samplstakapi.genre",
+    "pk": 3,
+    "fields": {
+      "label": "R&B"
+    }
+  },
+  {
+    "model": "samplstakapi.genre",
+    "pk": 4,
+    "fields": {
+      "label": "Lo-Fi"
+    }
+  },
+  {
+    "model": "samplstakapi.genre",
+    "pk": 5,
+    "fields": {
+      "label": "EDM"
+    }
+  }
+]

@@ -1,0 +1,35 @@
+[
+  {
+    "model": "samplstakapi.sample",
+    "pk": 1,
+    "fields": {
+      "file_url": "https://soundcloud.com/user-375589687/oliver-clap-electronic-punch?si=d57b741e86e94fd5bed6a4d03efc8595&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing",
+      "file_name": "OLIVER_clap_electronic_punch.wav",
+      "instrument": 4,
+      "genre": [1, 2],
+      "producer": 1
+    }
+  },
+  {
+    "model": "samplstakapi.sample",
+    "pk": 2,
+    "fields": {
+      "file_url": "https://soundcloud.com/user-375589687/beej-bedroom-snare-4?si=cd0e3389ff36424192cd3c3b8632a7a9&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing",
+      "file_name": "BEEJ_bedroom_snare_4.wav",
+      "instrument": 2,
+      "genre": [3, 4, 5],
+      "producer": 1
+    }
+  },
+  {
+    "model": "samplstakapi.sample",
+    "pk": 3,
+    "fields": {
+      "file_url": "https://soundcloud.com/user-375589687/captain-cuts-percussion?si=ba83f808575d470c92efed4170f5558b&utm_source=clipboard&utm_medium=text&utm_campaign=social_sharing",
+      "file_name": "CAPTAIN_CUTs_percussion_scrunchie.wav",
+      "instrument": 6,
+      "genre": [2, 3, 5],
+      "producer": 1
+    }
+  }
+]
