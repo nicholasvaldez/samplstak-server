@@ -3,7 +3,7 @@ from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from samplstakapi.models import Sample
+from samplstakapi.models import Sample, Instrument, Genre
 
 
 class SampleView(ViewSet):
@@ -45,9 +45,28 @@ class SampleView(ViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class InstrumentSerializer(serializers.ModelSerializer):
+    """ JSON serializer for instruments
+    """
+    class Meta:
+        model = Instrument
+        fields = ('id', 'label')
+
+
+class GenreSerializer(serializers.ModelSerializer):
+    """ JSON serializer for genres
+    """
+    class Meta:
+        model = Genre
+        fields = ('id', 'label')
+
+
 class SampleSerializer(serializers.ModelSerializer):
     """JSON serializer for samples
     """
+    instrument = InstrumentSerializer(many=False)
+    genre = GenreSerializer(many=True)
+
     class Meta:
         model = Sample
         fields = ('id', 'file_url', 'file_name',
