@@ -25,6 +25,9 @@ class SampleView(ViewSet):
         Returns:
             Response -- JSON serialized list of samples
         """
+        samples = Sample.objects.all()
+        serializer = SampleSerializer(samples, many=True)
+        return Response(serializer.data)
 
 
 class SampleSerializer(serializers.ModelSerializer):
