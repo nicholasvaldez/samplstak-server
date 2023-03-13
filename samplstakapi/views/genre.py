@@ -9,6 +9,17 @@ from samplstakapi.models import Genre
 class GenreView(ViewSet):
     """SamplStak genres view"""
 
+    def retrieve(self, request, pk):
+        """Handle GET requests for single genre
+
+        Returns:
+            Response -- JSON serialized genre
+        """
+
+        genre = Genre.objects.get(pk=pk)
+        serializer = GenreSerializer(genre)
+        return Response(serializer.data)
+
     def list(self, request):
         """Handle GET requests to get all genres
 
