@@ -28,15 +28,15 @@ class SampleView(ViewSet):
         samples = []
         samples = Sample.objects.all()
         if 'genre' in request.query_params:
-            if request.query_params['genre'] == "pop":
+            if request.query_params['genre'] == "1":
                 samples = samples.filter(genre=1)
-            elif request.query_params['genre'] == "hiphop":
+            elif request.query_params['genre'] == "2":
                 samples = samples.filter(genre=2)
-            elif request.query_params['genre'] == "rnb":
+            elif request.query_params['genre'] == "3":
                 samples = samples.filter(genre=3)
-            elif request.query_params['genre'] == "lofi":
+            elif request.query_params['genre'] == "4":
                 samples = samples.filter(genre=4)
-            elif request.query_params['genre'] == "edm":
+            elif request.query_params['genre'] == "5":
                 samples = samples.filter(genre=5)
         else:
             samples = Sample.objects.all()
