@@ -17,12 +17,13 @@ from django.contrib import admin
 from rest_framework import routers
 from django.conf.urls import include
 from django.urls import path
-from samplstakapi.views import register_user, login_user, GenreView, InstrumentView, SampleView
+from samplstakapi.views import register_user, login_user, GenreView, InstrumentView, SampleView, CollectionView
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'genres', GenreView, 'genre')
 router.register(r'instruments', InstrumentView, 'instrument')
 router.register(r'samples', SampleView, 'sample')
+router.register(r'collections', CollectionView, 'collection')
 
 
 urlpatterns = [
