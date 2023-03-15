@@ -1,0 +1,10 @@
+[
+  {
+    "model": "samplstakapi.collection",
+    "pk": 1,
+    "fields": {
+      "producer": 1,
+      "sample": [1, 3]
+    }
+  }
+]

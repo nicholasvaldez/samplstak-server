@@ -10,3 +10,5 @@ python3 manage.py loaddata producers
 python3 manage.py loaddata genres
 python3 manage.py loaddata instruments
 python3 manage.py loaddata samples
+python3 manage.py loaddata collection
+
