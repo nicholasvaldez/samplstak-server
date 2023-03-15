@@ -38,6 +38,9 @@ class SampleView(ViewSet):
                 samples = samples.filter(genre=4)
             elif request.query_params['genre'] == "5":
                 samples = samples.filter(genre=5)
+        elif 'producer' in request.query_params:
+            producer_id = int(request.query_params['producer'])
+            samples = samples.filter(producer=producer_id)
         else:
             samples = Sample.objects.all()
 
