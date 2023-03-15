@@ -34,6 +34,10 @@ class CollectionView(ViewSet):
             genre_id = int(request.query_params['genre'])
             samples = [
                 s for s in samples if genre_id in s.sample.genre.values_list('id', flat=True)]
+        if 'instrument' in request.query_params:
+            instrument_id = int(request.query_params['instrument'])
+            samples = samples.filter(sample__instrument__id=instrument_id)
+
         else:
             producer = Producer.objects.get(user=request.user)
             samples = Collection.objects.filter(producer=producer)
