@@ -47,6 +47,29 @@ class SampleView(ViewSet):
         serializer = SampleSerializer(samples, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
+    def create(self, request):
+        """Handle POST operations
+
+        Returns
+            Response -- JSON serialized game instance
+        """
+        producer = Producer.objects.get(user=request.auth.user)
+        instrument = Instrument.objects.get(pk=request.data["instrument"])
+        genre_ids = request.data.get("genre", [])
+        if isinstance(genre_ids, int):  # convert int to list
+            genre_ids = [genre_ids]
+        genres = Genre.objects.filter(id__in=genre_ids)
+
+        sample = Sample.objects.create(
+            file_url=request.data["file_url"],
+            file_name=request.data["file_name"],
+            instrument=instrument,
+            producer=producer
+        )
+        sample.genre.set(genres)
+        serializer = SampleSerializer(sample)
+        return Response(serializer.data)
+
 
 class InstrumentSerializer(serializers.ModelSerializer):
     """ JSON serializer for instruments
