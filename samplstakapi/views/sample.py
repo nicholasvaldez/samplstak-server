@@ -3,7 +3,7 @@ from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from samplstakapi.models import Sample, Instrument, Genre
+from samplstakapi.models import Sample, Instrument, Genre, Producer
 
 
 class SampleView(ViewSet):
@@ -26,6 +26,7 @@ class SampleView(ViewSet):
             Response -- JSON serialized list of samples
         """
         samples = []
+        producer_id = Producer.objects.get(user=request.auth.user)
         samples = Sample.objects.all()
         if 'genre' in request.query_params:
             if request.query_params['genre'] == "1":
@@ -39,7 +40,6 @@ class SampleView(ViewSet):
             elif request.query_params['genre'] == "5":
                 samples = samples.filter(genre=5)
         elif 'producer' in request.query_params:
-            producer_id = int(request.query_params['producer'])
             samples = samples.filter(producer=producer_id)
         else:
             samples = Sample.objects.all()
