@@ -27,9 +27,17 @@ class CollectionView(ViewSet):
         Returns:
             Response -- JSON serialized list of samples in collection
         """
-
+        samples = []
         producer = Producer.objects.get(user=request.user)
         samples = Collection.objects.filter(producer=producer)
+        if 'genre' in request.query_params:
+            genre_id = int(request.query_params['genre'])
+            samples = [
+                s for s in samples if genre_id in s.sample.genre.values_list('id', flat=True)]
+        else:
+            producer = Producer.objects.get(user=request.user)
+            samples = Collection.objects.filter(producer=producer)
+
         serializer = CollectionSerializer(samples, many=True)
         return Response(serializer.data)
 
@@ -40,7 +48,7 @@ class CollectionView(ViewSet):
             Response -- JSON serialized collection sample instance
         """
         producer = Producer.objects.get(user=request.user)
-        sample = Sample.objects.get(pk=request.data["sample"])
+        sample = Sample.objects.get(pk=request.data['sample'])
 
         collection = Collection.objects.create(
             producer=producer,
