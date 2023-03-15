@@ -6,4 +6,5 @@ from .producer import Producer
 
 class Collection(models.Model):
     producer = models.ForeignKey(Producer, on_delete=models.CASCADE)
-    sample = models.ManyToManyField(Sample, related_name="saved_samples")
+    sample = models.ForeignKey(
+        Sample, on_delete=models.CASCADE, related_name="saved_samples")

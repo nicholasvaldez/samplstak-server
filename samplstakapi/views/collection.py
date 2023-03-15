@@ -34,19 +34,20 @@ class CollectionView(ViewSet):
         return Response(serializer.data)
 
     def create(self, request):
-        """Handle POST requests to add samples to collection
+        """Handle POST requests
+
+        Returns
+            Response -- JSON serialized collection sample instance
         """
-        sample_id = request.data.get('id')
-        user = request.user
+        producer = Producer.objects.get(user=request.user)
+        sample = Sample.objects.get(pk=request.data["sample"])
 
-        if not sample_id:
-            return Response({'error': 'sample_id is required'}, status=status.HTTP_400_BAD_REQUEST)
-
-        user_sample, created = Collection.objects.get_or_create(user=user)
-        sample = Sample.objects.get(id=sample_id)
-        user_sample.samples.add(sample)
-
-        return Response({'success': 'sample added to collection'}, status=status.HTTP_201_CREATED)
+        collection = Collection.objects.create(
+            producer=producer,
+            sample=sample
+        )
+        serializer = CollectionSerializer(collection)
+        return Response(serializer.data)
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -71,7 +72,7 @@ class CollectionSerializer(serializers.ModelSerializer):
     """JSON serializer for sample collection
     """
 
-    sample = SampleSerializer(many=True)
+    sample = SampleSerializer()
 
     class Meta:
         model = Collection
