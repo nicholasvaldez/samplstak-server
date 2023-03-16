@@ -65,18 +65,27 @@ class SampleView(ViewSet):
         """
         producer = Producer.objects.get(user=request.auth.user)
         instrument = Instrument.objects.get(pk=request.data["instrument"])
-        genre_ids = request.data.get("genre", [])
-        if isinstance(genre_ids, int):  # convert int to list
-            genre_ids = [genre_ids]
-        genres = Genre.objects.filter(id__in=genre_ids)
-
         sample = Sample.objects.create(
             file_url=request.data["file_url"],
             file_name=request.data["file_name"],
             instrument=instrument,
             producer=producer
         )
-        sample.genre.set(genres)
+        genre_ids = request.data.get("genre", [])
+
+        # iterate list of genres
+        for genre_id in genre_ids:
+            # for every i, get current instance based off of id
+            genre = Genre.objects.get(pk=genre_id)
+        # sample.genre.add(genre)
+            sample.genre.add(genre)
+
+        # if isinstance(genre_ids, int):  # convert int to list
+        #     genre_ids = [genre_ids]
+        # genres = Genre.objects.filter(id__in=genre_ids)
+
+        # sample.genre.set(genres)
+
         serializer = SampleSerializer(sample)
         return Response(serializer.data)
 
