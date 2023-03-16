@@ -70,6 +70,44 @@ class SampleView(ViewSet):
         serializer = SampleSerializer(sample)
         return Response(serializer.data)
 
+    def update(self, request, pk):
+        """Handle PUT requests for a sample
+
+        Returns:
+            Response -- Empty body with 204 status code
+        """
+        try:
+            sample = Sample.objects.get(pk=pk)
+        except Sample.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
+        sample.file_url = request.data["file_url"]
+        sample.file_name = request.data["file_name"]
+
+        instrument_pk = request.data.get("instrument")
+        if instrument_pk is not None:
+            try:
+                instrument = Instrument.objects.get(pk=instrument_pk)
+            except Instrument.DoesNotExist:
+                return Response({"instrument": ["Invalid pk"]}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                sample.instrument = instrument
+
+        genres_pks = request.data.get("genre")
+        if genres_pks is not None:
+            try:
+                genres = Genre.objects.filter(pk__in=genres_pks)
+            except Genre.DoesNotExist:
+                return Response({"genre": ["Invalid pk"]}, status=status.HTTP_400_BAD_REQUEST)
+            else:
+                sample.genre.set(genres)
+
+        producer = Producer.objects.get(user=request.auth.user)
+        sample.producer = producer
+        sample.save()
+
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
+
 
 class InstrumentSerializer(serializers.ModelSerializer):
     """ JSON serializer for instruments
