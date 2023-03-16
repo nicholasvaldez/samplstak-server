@@ -4,10 +4,16 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
 from samplstakapi.models import Sample, Instrument, Genre, Producer
+from django.contrib.auth.models import User
 
 
 class SampleView(ViewSet):
     """SamplStak samples view"""
+
+    def destroy(self, request, pk):
+        sample = Sample.objects.get(pk=pk)
+        sample.delete()
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
 
     def retrieve(self, request, pk):
         """Handle GET requests for single sample
@@ -15,7 +21,11 @@ class SampleView(ViewSet):
         Returns:
             Response -- JSON serialized sample
         """
-        sample = Sample.objects.get(pk=pk)
+        try:
+            sample = Sample.objects.get(pk=pk)
+        except Sample.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
+
         serializer = SampleSerializer(sample)
         return Response(serializer.data)
 
