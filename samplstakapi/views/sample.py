@@ -83,6 +83,8 @@ class SampleView(ViewSet):
             producer=producer
         )
         sample.genre.set(genres)
+
+        # Return serialized Sample instance in response
         serializer = SampleSerializer(sample)
         return Response(serializer.data)
 
