@@ -5,7 +5,9 @@ from rest_framework.response import Response
 import os
 from rest_framework import serializers, status
 from samplstakapi.models import Sample, Instrument, Genre, Producer
-from django.contrib.auth.models import User
+import uuid
+import base64
+from django.core.files.base import ContentFile
 
 
 class SampleView(ViewSet):
@@ -72,12 +74,14 @@ class SampleView(ViewSet):
         genres = Genre.objects.filter(id__in=genre_ids)
 
         # Create the file path based on the upload_to parameter of the file_url field
-        file_path = os.path.join(
-            'wav', request.data["file_url"].split('/')[-1])
+        format, audiostr = request.data["file_url"].split(';base64,')
+        ext = format.split('/')[-1]
+        data = ContentFile(base64.b64decode(
+            audiostr), name=f'sample-{uuid.uuid4()}.{ext}')
 
         # Create the Sample object with the correct file path
         sample = Sample.objects.create(
-            file_url=file_path,
+            file_url=data,
             file_name=request.data["file_name"],
             instrument=instrument,
             producer=producer
@@ -86,7 +90,7 @@ class SampleView(ViewSet):
 
         # Return serialized Sample instance in response
         serializer = SampleSerializer(sample)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def update(self, request, pk):
         """Handle PUT requests for a sample
