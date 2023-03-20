@@ -103,7 +103,7 @@ class SampleView(ViewSet):
         except Sample.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-        sample.file_url = request.data["file_url"]
+        # sample.file_url = request.data["file_url"]
         sample.file_name = request.data["file_name"]
 
         instrument_pk = request.data.get("instrument")
