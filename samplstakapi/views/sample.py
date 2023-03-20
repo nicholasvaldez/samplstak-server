@@ -2,9 +2,12 @@
 from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
+import os
 from rest_framework import serializers, status
 from samplstakapi.models import Sample, Instrument, Genre, Producer
-from django.contrib.auth.models import User
+import uuid
+import base64
+from django.core.files.base import ContentFile
 
 
 class SampleView(ViewSet):
@@ -65,29 +68,29 @@ class SampleView(ViewSet):
         """
         producer = Producer.objects.get(user=request.auth.user)
         instrument = Instrument.objects.get(pk=request.data["instrument"])
+        genre_ids = request.data.get("genre", [])
+        if isinstance(genre_ids, int):  # convert int to list
+            genre_ids = [genre_ids]
+        genres = Genre.objects.filter(id__in=genre_ids)
+
+        # Create the file path based on the upload_to parameter of the file_url field
+        format, audiostr = request.data["file_url"].split(';base64,')
+        ext = format.split('/')[-1]
+        data = ContentFile(base64.b64decode(
+            audiostr), name=f'sample-{uuid.uuid4()}.{ext}')
+
+        # Create the Sample object with the correct file path
         sample = Sample.objects.create(
-            file_url=request.data["file_url"],
+            file_url=data,
             file_name=request.data["file_name"],
             instrument=instrument,
             producer=producer
         )
-        genre_ids = request.data.get("genre", [])
+        sample.genre.set(genres)
 
-        # iterate list of genres
-        for genre_id in genre_ids:
-            # for every i, get current instance based off of id
-            genre = Genre.objects.get(pk=genre_id)
-        # sample.genre.add(genre)
-            sample.genre.add(genre)
-
-        # if isinstance(genre_ids, int):  # convert int to list
-        #     genre_ids = [genre_ids]
-        # genres = Genre.objects.filter(id__in=genre_ids)
-
-        # sample.genre.set(genres)
-
+        # Return serialized Sample instance in response
         serializer = SampleSerializer(sample)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def update(self, request, pk):
         """Handle PUT requests for a sample
@@ -149,6 +152,8 @@ class SampleSerializer(serializers.ModelSerializer):
     """
     instrument = InstrumentSerializer(many=False)
     genre = GenreSerializer(many=True)
+    file_url = serializers.FileField(
+        max_length=None, use_url=True)
 
     class Meta:
         model = Sample
