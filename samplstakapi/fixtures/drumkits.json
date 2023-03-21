@@ -1,0 +1,12 @@
+[
+  {
+    "model": "samplstakapi.drumkit",
+    "pk": 1,
+    "fields": {
+      "name": "DECAP - Drums That Knock Vol. 9",
+      "producer": 1,
+      "image": "img/1623687782.webp",
+      "genre": 2
+    }
+  }
+]

@@ -19,13 +19,14 @@ from django.conf.urls import include
 from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
-from samplstakapi.views import register_user, login_user, GenreView, InstrumentView, SampleView, CollectionView
+from samplstakapi.views import register_user, login_user, GenreView, InstrumentView, SampleView, CollectionView, DrumkitView
 
 router = routers.DefaultRouter(trailing_slash=False)
 router.register(r'genres', GenreView, 'genre')
 router.register(r'instruments', InstrumentView, 'instrument')
 router.register(r'samples', SampleView, 'sample')
 router.register(r'collections', CollectionView, 'collection')
+router.register(r'drumkits', DrumkitView, 'drumkit')
 
 
 urlpatterns = [

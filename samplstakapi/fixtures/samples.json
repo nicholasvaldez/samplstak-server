@@ -7,7 +7,8 @@
       "file_name": "OLIVER_clap_electronic_punch.wav",
       "instrument": 4,
       "genre": [1, 2],
-      "producer": 1
+      "producer": 1,
+      "drumkit": null
     }
   },
   {
@@ -18,7 +19,8 @@
       "file_name": "BEEJ_bedroom_snare_4.wav",
       "instrument": 2,
       "genre": [3, 4, 5],
-      "producer": 1
+      "producer": 1,
+      "drumkit": null
     }
   },
   {
@@ -29,7 +31,8 @@
       "file_name": "CAPTAIN_CUTs_percussion_scrunchie.wav",
       "instrument": 6,
       "genre": [2, 3, 5],
-      "producer": 1
+      "producer": 1,
+      "drumkit": null
     }
   }
 ]

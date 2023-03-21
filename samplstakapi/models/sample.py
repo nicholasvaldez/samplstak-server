@@ -2,6 +2,7 @@ from django.db import models
 from .instrument import Instrument
 from .genre import Genre
 from .producer import Producer
+from .drumkit import Drumkit
 
 
 class Sample(models.Model):
@@ -13,3 +14,4 @@ class Sample(models.Model):
     genre = models.ManyToManyField(Genre, related_name="genre_samples")
     producer = models.ForeignKey(
         Producer, on_delete=models.CASCADE, related_name="producer_samples")
+    drumkit = models.ForeignKey(Drumkit, on_delete=models.CASCADE, null=True)
