@@ -28,8 +28,8 @@ class CollectionView(ViewSet):
             Response -- JSON serialized list of samples in collection
         """
         samples = []
-        producer = Producer.objects.get(user=request.user)
-        samples = Collection.objects.filter(producer=producer)
+        # producer = Producer.objects.get(user=request.user)
+        samples = Collection.objects.all()
         if 'genre' in request.query_params:
             genre_id = int(request.query_params['genre'])
             samples = [
@@ -39,8 +39,8 @@ class CollectionView(ViewSet):
             samples = samples.filter(sample__instrument__id=instrument_id)
 
         else:
-            producer = Producer.objects.get(user=request.user)
-            samples = Collection.objects.filter(producer=producer)
+            # producer = Producer.objects.get(user=request.user)
+            samples = Collection.objects.all()
 
         serializer = CollectionSerializer(samples, many=True)
         return Response(serializer.data)
