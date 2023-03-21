@@ -6,6 +6,9 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
 from samplstakapi.models import Producer
+import uuid
+import base64
+from django.core.files.base import ContentFile
 
 
 @api_view(['POST'])
@@ -57,10 +60,16 @@ def register_user(request):
         last_name=request.data['last_name']
     )
 
+    format, imgstr = request.data["image"].split(';base64,')
+    ext = format.split('/')[-1]
+    data = ContentFile(base64.b64decode(
+        imgstr), name=f'producer-{uuid.uuid4()}.{ext}')
+
     # Now save the extra info in the samplstakapi_producer table
     produer = Producer.objects.create(
         bio=request.data['bio'],
-        user=new_user
+        user=new_user,
+        image=data
     )
 
     # Use the REST Framework's token generator on the new user account

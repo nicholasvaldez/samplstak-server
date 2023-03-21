@@ -147,6 +147,16 @@ class GenreSerializer(serializers.ModelSerializer):
         fields = ('id', 'label')
 
 
+class ProducerSerializer(serializers.ModelSerializer):
+    """ JSON serializer for producers
+    """
+    image = serializers.ImageField(max_length=None, use_url=True)
+
+    class Meta:
+        model = Producer
+        fields = ('id', 'bio', 'image')
+
+
 class SampleSerializer(serializers.ModelSerializer):
     """JSON serializer for samples
     """
@@ -154,6 +164,7 @@ class SampleSerializer(serializers.ModelSerializer):
     genre = GenreSerializer(many=True)
     file_url = serializers.FileField(
         max_length=None, use_url=True)
+    producer = ProducerSerializer(many=False)
 
     class Meta:
         model = Sample

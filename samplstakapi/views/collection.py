@@ -51,8 +51,8 @@ class CollectionView(ViewSet):
         Returns
             Response -- JSON serialized collection sample instance
         """
-        producer = Producer.objects.get(user=request.user)
         sample = Sample.objects.get(pk=request.data['sample'])
+        producer = Producer.objects.get(id=request.data['producer'])
 
         collection = Collection.objects.create(
             producer=producer,
@@ -70,14 +70,26 @@ class GenreSerializer(serializers.ModelSerializer):
         fields = ('id', 'label')
 
 
+class ProducerSerializer(serializers.ModelSerializer):
+    """ JSON serializer for producers
+    """
+    image = serializers.ImageField(max_length=None, use_url=True)
+
+    class Meta:
+        model = Producer
+        fields = ('id', 'bio', 'image')
+
+
 class SampleSerializer(serializers.ModelSerializer):
     """ JSON serializer for genres
     """
     genre = GenreSerializer(many=True)
+    producer = ProducerSerializer(many=False)
 
     class Meta:
         model = Sample
-        fields = ('id', 'file_url', 'file_name', 'instrument', 'genre',)
+        fields = ('id', 'file_url', 'file_name',
+                  'instrument', 'genre', 'producer')
 
 
 class CollectionSerializer(serializers.ModelSerializer):
