@@ -11,4 +11,5 @@ python3 manage.py loaddata genres
 python3 manage.py loaddata instruments
 python3 manage.py loaddata samples
 python3 manage.py loaddata collection
+python3 manage.py loaddata drumkits
 

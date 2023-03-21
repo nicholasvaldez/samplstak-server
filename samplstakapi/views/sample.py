@@ -4,7 +4,7 @@ from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 import os
 from rest_framework import serializers, status
-from samplstakapi.models import Sample, Instrument, Genre, Producer
+from samplstakapi.models import Sample, Instrument, Genre, Producer, Drumkit
 import uuid
 import base64
 from django.core.files.base import ContentFile
@@ -51,6 +51,10 @@ class SampleView(ViewSet):
             producer = Producer.objects.get(user=request.auth.user)
             samples = samples.filter(producer=producer)
 
+        elif 'drumkit' in request.query_params:
+            drumkit = int(request.query_params['drumkit'])
+            samples = samples.filter(drumkit=drumkit)
+
         # Sort randomly if "random" query parameter is present
         if 'random' in request.query_params:
             samples = samples.order_by('?')
@@ -71,6 +75,7 @@ class SampleView(ViewSet):
         if isinstance(genre_ids, int):  # convert int to list
             genre_ids = [genre_ids]
         genres = Genre.objects.filter(id__in=genre_ids)
+        drumkit = Drumkit.objects.get(pk=request.data["drumkit"])
 
         # Create the file path based on the upload_to parameter of the file_url field
         format, audiostr = request.data["file_url"].split(';base64,')
@@ -83,7 +88,8 @@ class SampleView(ViewSet):
             file_url=data,
             file_name=request.data["file_name"],
             instrument=instrument,
-            producer=producer
+            producer=producer,
+            drumkit=drumkit,
         )
         sample.genre.set(genres)
 
@@ -153,7 +159,18 @@ class ProducerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Producer
-        fields = ('id', 'bio', 'image')
+        fields = ('id', 'full_name', 'image')
+
+
+class DrumkitSerializer(serializers.ModelSerializer):
+    """ JSON serializer for producers
+    """
+    image = serializers.ImageField(max_length=None, use_url=True)
+    producer = ProducerSerializer(many=False)
+
+    class Meta:
+        model = Drumkit
+        fields = ('id', 'name', 'producer', 'image', 'genre')
 
 
 class SampleSerializer(serializers.ModelSerializer):
@@ -164,8 +181,9 @@ class SampleSerializer(serializers.ModelSerializer):
     file_url = serializers.FileField(
         max_length=None, use_url=True)
     producer = ProducerSerializer(many=False)
+    drumkit = DrumkitSerializer(many=False)
 
     class Meta:
         model = Sample
         fields = ('id', 'file_url', 'file_name',
-                  'instrument', 'genre', 'producer')
+                  'instrument', 'genre', 'producer', 'drumkit')
