@@ -8,6 +8,7 @@ from samplstakapi.models import Sample, Instrument, Genre, Producer
 import uuid
 import base64
 from django.core.files.base import ContentFile
+import random
 
 
 class SampleView(ViewSet):
@@ -38,25 +39,23 @@ class SampleView(ViewSet):
         Returns:
             Response -- JSON serialized list of samples
         """
-        samples = []
-        producer_id = Producer.objects.get(user=request.auth.user)
         samples = Sample.objects.all()
-        if 'genre' in request.query_params:
-            if request.query_params['genre'] == "1":
-                samples = samples.filter(genre=1)
-            elif request.query_params['genre'] == "2":
-                samples = samples.filter(genre=2)
-            elif request.query_params['genre'] == "3":
-                samples = samples.filter(genre=3)
-            elif request.query_params['genre'] == "4":
-                samples = samples.filter(genre=4)
-            elif request.query_params['genre'] == "5":
-                samples = samples.filter(genre=5)
-        elif 'producer' in request.query_params:
-            samples = samples.filter(producer=producer_id)
-        else:
-            samples = Sample.objects.all()
 
+        # Filter by genre if "genre" query parameter is present
+        if 'genre' in request.query_params:
+            genre_id = int(request.query_params['genre'])
+            samples = samples.filter(genre=genre_id)
+
+        # Filter by producer if "producer" query parameter is present
+        elif 'producer' in request.query_params:
+            producer = Producer.objects.get(user=request.auth.user)
+            samples = samples.filter(producer=producer)
+
+        # Sort randomly if "random" query parameter is present
+        if 'random' in request.query_params:
+            samples = samples.order_by('?')
+
+        # Serialize samples and return response
         serializer = SampleSerializer(samples, many=True)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
