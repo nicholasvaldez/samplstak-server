@@ -3,7 +3,7 @@ from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from samplstakapi.models import Collection, Sample, Producer, Genre
+from samplstakapi.models import Collection, Sample, Producer, Genre, Drumkit
 from django.contrib.auth.models import User
 
 
@@ -80,16 +80,28 @@ class ProducerSerializer(serializers.ModelSerializer):
         fields = ('id', 'bio', 'image')
 
 
+class DrumkitSerializer(serializers.ModelSerializer):
+    """ JSON serializer for producers
+    """
+    image = serializers.ImageField(max_length=None, use_url=True)
+    producer = ProducerSerializer(many=False)
+
+    class Meta:
+        model = Drumkit
+        fields = ('id', 'name', 'producer', 'image', 'genre')
+
+
 class SampleSerializer(serializers.ModelSerializer):
     """ JSON serializer for genres
     """
     genre = GenreSerializer(many=True)
     producer = ProducerSerializer(many=False)
+    drumkit = DrumkitSerializer(many=False)
 
     class Meta:
         model = Sample
         fields = ('id', 'file_url', 'file_name',
-                  'instrument', 'genre', 'producer')
+                  'instrument', 'genre', 'producer', 'drumkit')
 
 
 class CollectionSerializer(serializers.ModelSerializer):
