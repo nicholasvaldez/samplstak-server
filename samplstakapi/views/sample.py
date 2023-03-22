@@ -75,7 +75,10 @@ class SampleView(ViewSet):
         if isinstance(genre_ids, int):  # convert int to list
             genre_ids = [genre_ids]
         genres = Genre.objects.filter(id__in=genre_ids)
-        drumkit = Drumkit.objects.get(pk=request.data["drumkit"])
+        drumkit_id = request.data.get("drumkit")
+        drumkit = None
+        if drumkit_id is not None:
+            drumkit = Drumkit.objects.get(pk=drumkit_id)
 
         # Create the file path based on the upload_to parameter of the file_url field
         format, audiostr = request.data["file_url"].split(';base64,')
