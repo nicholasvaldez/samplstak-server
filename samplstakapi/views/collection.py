@@ -59,7 +59,7 @@ class CollectionView(ViewSet):
             Response -- JSON serialized collection sample instance
         """
         sample = Sample.objects.get(pk=request.data['sample'])
-        producer = Producer.objects.get(id=request.data['producer'])
+        producer = Producer.objects.get(user=request.auth.user)
 
         collection = Collection.objects.create(
             producer=producer,
