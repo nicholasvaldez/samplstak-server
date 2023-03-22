@@ -3,12 +3,17 @@ from django.http import HttpResponseServerError
 from rest_framework.viewsets import ViewSet
 from rest_framework.response import Response
 from rest_framework import serializers, status
-from samplstakapi.models import Collection, Sample, Producer, Genre, Drumkit
+from samplstakapi.models import Collection, Sample, Producer, Genre, Drumkit, Instrument
 from django.contrib.auth.models import User
 
 
 class CollectionView(ViewSet):
     """SamplStak collection view"""
+
+    def destroy(self, request, pk):
+        sample = Collection.objects.get(pk=pk)
+        sample.delete()
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
 
     def retrieve(self, request, pk):
         """Handle GET requests for single sample
@@ -28,7 +33,6 @@ class CollectionView(ViewSet):
             Response -- JSON serialized list of samples in collection
         """
         samples = []
-        # producer = Producer.objects.get(user=request.user)
         samples = Collection.objects.all()
         if 'genre' in request.query_params:
             genre_id = int(request.query_params['genre'])
@@ -37,6 +41,9 @@ class CollectionView(ViewSet):
         elif 'instrument' in request.query_params:
             instrument_id = int(request.query_params['instrument'])
             samples = samples.filter(sample__instrument__id=instrument_id)
+        elif 'producer' in request.query_params:
+            producer = Producer.objects.get(user=request.auth.user)
+            samples = samples.filter(producer=producer)
 
         else:
             # producer = Producer.objects.get(user=request.user)
@@ -70,6 +77,14 @@ class GenreSerializer(serializers.ModelSerializer):
         fields = ('id', 'label')
 
 
+class InstrumentSerializer(serializers.ModelSerializer):
+    """ JSON serializer for instruments
+    """
+    class Meta:
+        model = Instrument
+        fields = ('id', 'label')
+
+
 class ProducerSerializer(serializers.ModelSerializer):
     """ JSON serializer for producers
     """
@@ -97,6 +112,7 @@ class SampleSerializer(serializers.ModelSerializer):
     genre = GenreSerializer(many=True)
     producer = ProducerSerializer(many=False)
     drumkit = DrumkitSerializer(many=False)
+    instrument = InstrumentSerializer(many=False)
 
     class Meta:
         model = Sample

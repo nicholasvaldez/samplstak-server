@@ -51,6 +51,10 @@ class SampleView(ViewSet):
             producer = Producer.objects.get(user=request.auth.user)
             samples = samples.filter(producer=producer)
 
+        elif 'instrument' in request.query_params:
+            instrument_id = int(request.query_params['instrument'])
+            samples = samples.filter(sample__instrument__id=instrument_id)
+
         elif 'drumkit' in request.query_params:
             drumkit = int(request.query_params['drumkit'])
             samples = samples.filter(drumkit=drumkit)
