@@ -1,9 +1,5 @@
 ## SamplStak
 
-## Problem Solved
-Most modern music productions utilize audio samples to elevate and achieve their sonic goals for their project song. Whether it is a piano melody, or a drum break, or a sound clip of cars passing by on a busy road, producers "chop up" these audio files in their DAWS(digital audio workstations) to isolate specific parts (loops) to inspire the main riff of a song or layer sounds on top of each other for a unique "one-shot" sound. Drum samples specifically, are *very* unique and are often *made*, *collected*, and *traded* amongst producers in packs (zip files) called "drumkits." 
-**SamplStak** is a platform for users to browse samples created by others and to upload their very own samples to share. 
-
 
 ## Learning Goals
 
