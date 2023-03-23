@@ -33,6 +33,10 @@ class DrumkitView(ViewSet):
         drumkits = Drumkit.objects.all()
         if 'random' in request.query_params:
             drumkits = drumkits.order_by('?')
+        elif 'producer' in request.query_params:
+            producer = Producer.objects.get(user=request.auth.user)
+            drumkits = drumkits.filter(producer=producer)
+
         serializer = DrumkitSerializer(drumkits, many=True)
         return Response(serializer.data)
 
@@ -54,7 +58,7 @@ class DrumkitView(ViewSet):
         )
 
         serializer = DrumkitSerializer(drumkit)
-        return Response(serializer.data)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 class GenreSerializer(serializers.ModelSerializer):
