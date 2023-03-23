@@ -12,6 +12,9 @@
 
 SamplStak is a platform that offers music producers an intuitive and user-friendly way to manage their drum samples. The DRF server at the core of this platform provides powerful features that enable users to upload, manage, and share their samples with ease. With streamlined file uploads, dynamic filtering, and the ability to save favorite samples to a personal collection, users can easily find and share the perfect samples to elevate their productions. Users are able to manage their own sample and drumkit collections, allowing them to upload, edit, and delete their own samples and drumkits. These features provide users with a comprehensive and customizable platform that streamlines the process of music production.
 
+## Technologies Used
+![Django REST](https://img.shields.io/badge/django%20rest-ff1709?style=for-the-badge&logo=django&logoColor=white)  ![GitHub](https://img.shields.io/badge/github%20-%23121011.svg?&style=for-the-badge&logo=github&logoColor=white)![Postman](https://img.shields.io/badge/Postman-FF6C37?style=for-the-badge&logo=Postman&logoColor=white)  ![Git](https://img.shields.io/badge/git%20-%23F05033.svg?&style=for-the-badge&logo=git&logoColor=white)  ![Visual Studio Code](https://img.shields.io/badge/VSCode%20-%23007ACC.svg?&style=for-the-badge&logo=visual-studio-code&logoColor=white)
+
 ## Set Up
 
 1. Clone this repo
