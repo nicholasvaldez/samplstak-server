@@ -7,6 +7,7 @@ from samplstakapi.models import Drumkit, Genre, Producer, Sample
 import uuid
 import base64
 from django.core.files.base import ContentFile
+import random
 
 
 class DrumkitView(ViewSet):
@@ -30,6 +31,8 @@ class DrumkitView(ViewSet):
             Response -- JSON serialized list of drumkits
         """
         drumkits = Drumkit.objects.all()
+        if 'random' in request.query_params:
+            drumkits = drumkits.order_by('?')
         serializer = DrumkitSerializer(drumkits, many=True)
         return Response(serializer.data)
 
