@@ -13,6 +13,11 @@ import random
 class DrumkitView(ViewSet):
     """SamplStak drumkits view"""
 
+    def destroy(self, request, pk):
+        drumkit = Drumkit.objects.get(pk=pk)
+        drumkit.delete()
+        return Response(None, status=status.HTTP_204_NO_CONTENT)
+
     def retrieve(self, request, pk):
         """Handle GET requests for single genre
 
