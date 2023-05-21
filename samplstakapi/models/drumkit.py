@@ -10,5 +10,5 @@ class Drumkit(models.Model):
     producer = models.ForeignKey(
         Producer, on_delete=models.CASCADE, related_name="drumkit_producer")
     image = models.ImageField(upload_to='img')
-    genre = models.ForeignKey(Genre, on_delete=models.SET_NULL,
+    genre = models.ForeignKey(Genre, on_delete=models.SET_NULL, null=True,
                               related_name="genre_of_drumkit")
