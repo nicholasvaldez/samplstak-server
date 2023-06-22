@@ -53,7 +53,7 @@ class SampleView(ViewSet):
 
         elif 'instrument' in request.query_params:
             instrument_id = int(request.query_params['instrument'])
-            samples = samples.filter(sample__instrument__id=instrument_id)
+            samples = samples.filter(instrument__id=instrument_id)
 
         elif 'drumkit' in request.query_params:
             drumkit = int(request.query_params['drumkit'])
