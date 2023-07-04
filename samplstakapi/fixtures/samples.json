@@ -15,7 +15,7 @@
     "model": "samplstakapi.sample",
     "pk": 2,
     "fields": {
-      "file_url": "wav/BEEJ_bedroom_snare_4.wav",
+      "file_url": "wav/BEEJ_BEDROOM_SNARE_4.wav",
       "file_name": "BEEJ_bedroom_snare_4.wav",
       "instrument": 2,
       "genre": [3, 4, 5],
@@ -27,7 +27,7 @@
     "model": "samplstakapi.sample",
     "pk": 3,
     "fields": {
-      "file_url": "wav/CAPTAIN_CUTs_percussion_scrunchie.wav",
+      "file_url": "wav/CAPTAIN_CUTS_percussion_scrunchie.wav",
       "file_name": "CAPTAIN_CUTs_percussion_scrunchie.wav",
       "instrument": 6,
       "genre": [2, 3, 5],
