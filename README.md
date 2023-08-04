@@ -4,6 +4,8 @@
 
 ![logoo](https://github.com/nicholasvaldez/samplstak-server/assets/102673642/77a9b578-1a7f-4e52-a4bc-2732feafcc0b)
 
+### [Video Demo](https://www.loom.com/share/7ce29a209a524674a989752a16db0d98?sid=c94a1919-87d7-44ca-a290-4ca19fd0cfa9)
+
 ## Learning Goals
 
 - Gain an understanding of how to use DRF FileField and ImageField to handle file and image uploads in a Django web application.
